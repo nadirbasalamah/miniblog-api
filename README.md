@@ -4,5 +4,5 @@ A simple REST API Application implementation using Laravel.
 
 ## Tech Stack
 
--   Laravel Framework
+-   Laravel Framework.
 -   MySQL Database.
