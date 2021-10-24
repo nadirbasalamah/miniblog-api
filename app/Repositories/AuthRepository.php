@@ -24,9 +24,15 @@ class AuthRepository
         $user->password = Hash::make($data['password']);
 
         $user->save();
-        $user->generateToken();
 
-        return $user->fresh();
+        $token = $user->createToken("myapptoken")->plainTextToken;
+
+        $result = [
+            "user" => $user->fresh(),
+            "token" => $token
+        ];
+
+        return $result;
     }
 
     public function login($data)
@@ -36,20 +42,21 @@ class AuthRepository
         if ($user) {
             $isPasswordCorrect = Hash::check($data['password'], $user->password);
             if ($isPasswordCorrect) {
-                $user->generateToken();
-                return $user;
+
+                $token = $user->createToken("myapptoken")->plainTextToken;
+                $result = [
+                    "user" => $user,
+                    "token" => $token,
+                ];
+
+                return $result;
             }
         }
     }
 
     public function logout()
     {
-        $user = Auth::user();
-
-        if ($user) {
-            $user->api_token = null;
-            $user->save();
-        }
+        auth()->user()->tokens()->delete();
 
         return true;
     }

@@ -26,12 +26,12 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
     // Private route
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
         Route::get('posts', [PostController::class, 'getAll']);
-        Route::get('post/{id}', [PostController::class, 'getById']);
-        Route::post('post', [PostController::class, 'save']);
-        Route::put('post/{id}', [PostController::class, 'update']);
-        Route::delete('post/{id}', [PostController::class, 'delete']);
+        Route::get('posts/{id}', [PostController::class, 'getById']);
+        Route::post('posts', [PostController::class, 'save']);
+        Route::put('posts/{id}', [PostController::class, 'update']);
+        Route::delete('posts/{id}', [PostController::class, 'delete']);
 
         Route::post('logout', [AuthController::class, 'logout']);
     });
