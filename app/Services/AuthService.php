@@ -18,7 +18,7 @@ class AuthService
 
     public function register($data)
     {
-        $validation = $this->validateRequest($data);
+        $validation = $this->validateRequest($data, true);
 
         if ($validation->fails()) {
             throw new InvalidArgumentException($validation->errors()->first());
@@ -47,12 +47,18 @@ class AuthService
         return $this->authRepository->logout();
     }
 
-    public function validateRequest($data)
+    public function validateRequest($data, $register = false)
     {
-        $validator = Validator::make($data, [
+        $rules = $register ? [
+            'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-        ]);
+            'password' => 'required'
+        ] : [
+            'email' => 'required',
+            'password' => 'required'
+        ];
+
+        $validator = Validator::make($data, $rules);
 
         return $validator;
     }
